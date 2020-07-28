@@ -12,6 +12,8 @@ const Text = styled.span`
 	font-family: arial;
 	font-size: 13px;
 	color: #777;
+	display: flex;
+	align-items: center;
 `
 const Title = styled.h1`
 	padding: 0 16px;
@@ -21,7 +23,13 @@ const Title = styled.h1`
 	text-align: center;
 	color: rgba(175, 47, 47, 0.7);
 `
-const Footer = styled.div`
+const Actions = styled.div`
+	display: flex;
+`
+const Action = styled.div`
+	padding: 5px;
+`
+const ActionWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	padding: 8px 16px 16px;
@@ -31,8 +39,15 @@ function TodoListApp() {
 	const [data, setData] = useState(
 		JSON.parse(localStorage.getItem('data')) || []
 	)
-
 	const [todoNew, setTodoNew] = useState('')
+	const [typeFilter, setTypeFilter] = useState('all')
+
+	const filteredData =
+		typeFilter !== 'all'
+			? typeFilter === 'active'
+				? data.filter((e) => e.isChecked === false)
+				: data.filter((e) => e.isChecked === true)
+			: data
 
 	const itemsActive = data.filter((e) => e.isChecked !== true)
 	const itemsCompleted = data.filter((e) => e.isChecked === true)
@@ -62,16 +77,30 @@ function TodoListApp() {
 				...data,
 			])
 			setTodoNew('')
-			localStorage.setItem('data', JSON.stringify(data))
+			localStorage.setItem(
+				'data',
+				JSON.stringify([
+					{ id: Date.now().toString(), name: todoNew, isChecked: false },
+					...data,
+				])
+			)
 		}
 	}
 
 	const handleCheck = (e) => {
 		const index = data.findIndex((x) => x.id === e.target.id)
-		console.log(index)
-		
+		let newArray = [...data]
+		newArray[index] = {
+			...newArray[index],
+			isChecked: !newArray[index].isChecked,
+		}
+		setData(newArray)
+		localStorage.setItem('data', JSON.stringify(newArray))
 	}
 
+	const handleChangeFilter = (type) => {
+		setTypeFilter(type)
+	}
 	return (
 		<Wrapper>
 			<Title>todos</Title>
@@ -81,21 +110,49 @@ function TodoListApp() {
 				onKeyPress={handleEnterTodoNew}
 			/>
 			<TodoList
-				data={data}
+				data={filteredData}
 				checkItem={handleCheck}
 				removeItem={handleRemoveItem}
 			/>
-			<Footer>
-				{data.length > 0 && (
+			{data.length > 0 && (
+				<ActionWrapper>
 					<Text>
-						{itemsActive.length} {itemsActive.length === 1 ? 'item' : 'items'}{' '}
+						{itemsActive.length} {itemsActive.length < 2 ? 'item' : 'items'}{' '}
 						left
 					</Text>
-				)}
-				{itemsCompleted.length > 0 && (
-					<Button name='Clear completed' onClick={handleClearItemsCompleted} />
-				)}
-			</Footer>
+					<Actions>
+						<Action>
+							<Button
+								active={typeFilter === 'all' ? true : false}
+								filter='true'
+								name='All'
+								onClick={() => handleChangeFilter('all')}
+							/>
+						</Action>
+						<Action>
+							<Button
+								active={typeFilter === 'active' ? true : false}
+								filter='true'
+								name='Active'
+								onClick={() => handleChangeFilter('active')}
+							/>
+						</Action>
+						<Action>
+							<Button
+								active={typeFilter === 'completed' ? true : false}
+								filter='true'
+								name='Completed'
+								onClick={() => handleChangeFilter('completed')}
+							/>
+						</Action>
+					</Actions>
+					<Button
+						disabled={itemsCompleted.length > 0 ? false : true}
+						name='Clear completed'
+						onClick={handleClearItemsCompleted}
+					/>
+				</ActionWrapper>
+			)}
 		</Wrapper>
 	)
 }

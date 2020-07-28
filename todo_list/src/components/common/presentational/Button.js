@@ -4,20 +4,25 @@ import styled from 'styled-components'
 const Wrapper = styled.button`
 	font-size: 13px;
 	border: none;
-	color: #777;
-	background: none;
-	cursor: pointer;
-	padding: 0;
+	color: ${(props) => (props.disabled ? 'transparent' : '#777')};
+	background: ${(props) => (props.filter && props.active ? 'cc9a9a' : 'none')};
+	cursor: ${(props) => (props.disabled ? 'none' : 'pointer')};
+	padding: ${(props) => (props.filter ? '3px 7px' : '0')};
 	outline: none;
 	&:hover {
-		text-decoration: underline;
+		text-decoration: ${(props) => props.filter && !props.active && 'underline'};
 	}
 `
 
 const Text = styled.span``
 
-const GeneralButton = ({ name, onClick }) => (
-	<Wrapper onClick={onClick}>
+const GeneralButton = ({ name, active, disabled, filter, onClick }) => (
+	<Wrapper
+		onClick={onClick}
+		disabled={disabled}
+		filter={filter}
+		active={active}
+	>
 		<Text>{name}</Text>
 	</Wrapper>
 )

@@ -20,16 +20,16 @@ const OuterCircle = styled.div`
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
-	border: solid 1px #4d4d4d;
+	border: solid 2px #4d4d4d;
 	&:hover {
 		background: #f5f5f5;
 	}
 `
 const InnerCircle = styled.div`
-	background: ${(props) => props.checked && '#4CAF50'};
+	background: ${(props) => props.checked && '#28a745'};
 	border-radius: 50%;
-	height: 18px;
-	width: 18px;
+	height: 16px;
+	width: 16px;
 `
 
 const CheckboxInput = ({ id, checked, onClick }) => (
