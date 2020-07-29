@@ -64,7 +64,11 @@ function TodoListApp() {
 	const itemsCompleted = data.filter((e) => e.isChecked === true)
 
 	const updateData = (newData) => {
-		localStorage.setItem('data', JSON.stringify(newData))
+		try {
+			localStorage.setItem('data', JSON.stringify(newData))
+		} catch (error) {
+			console.log(error)
+		}
 		setData(newData)
 	}
 
