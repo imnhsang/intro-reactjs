@@ -12,6 +12,7 @@ const Button = styled.button`
 		color: #af5b5e;
 	}
 `
+
 const RemoveButton = ({id, onClick}) => (
 	<Button id={id} onClick={onClick}>
 		&#10005;

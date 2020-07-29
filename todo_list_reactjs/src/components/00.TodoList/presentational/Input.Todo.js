@@ -9,4 +9,5 @@ const TodoInput = ({ todoText, onChange, onKeyPress }) => (
 		placeholder='What needs to be done?'
 	/>
 )
+
 export default TodoInput

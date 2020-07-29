@@ -10,7 +10,6 @@ const Wrapper = styled.button`
 	background: none;
 	outline: none;
 `
-
 const OuterCircle = styled.div`
 	border-radius: 50%;
 	height: 22px;

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import TodoInput from './presentational/Input.Todo'
 import Button from '../common/presentational/Button'
 import TodoList from './presentational/List.Todo'
+
 const Wrapper = styled.div`
 	min-width: 230px;
 	max-width: 550px;
@@ -44,6 +45,7 @@ const ActionWrapper = styled.div`
 	padding: 8px 16px 16px;
 	justify-content: space-between;
 `
+
 function TodoListApp() {
 	const [data, setData] = useState(
 		JSON.parse(localStorage.getItem('data')) || []

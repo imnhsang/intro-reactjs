@@ -14,7 +14,6 @@ const Wrapper = styled.button`
 			((props.filter && !props.active) || props.clear) && 'underline'};
 	}
 `
-
 const Text = styled.span``
 
 const GeneralButton = ({ name, active, disabled, filter, onClick, clear }) => (
