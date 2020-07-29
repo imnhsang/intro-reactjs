@@ -5,5 +5,5 @@
 #### Facebook: fb.com/im.leonguyennn
 
 ## Description
-#### Todo list app (only ReactJS) - 100%
-#### Todo list app (ReactJS + Redux) - 95%
+##### Todo list app (only ReactJS) - 100%
+##### Todo list app (ReactJS + Redux) - 95%
