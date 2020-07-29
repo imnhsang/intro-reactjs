@@ -73,8 +73,16 @@ function TodoListApp({
 	const itemsActive = currentTodos.filter((e) => e.isChecked !== true)
 	const itemsCompleted = currentTodos.filter((e) => e.isChecked === true)
 
+	const saveToLocalStorage = (newData) => {
+		try {
+			localStorage.setItem('data', JSON.stringify(newData))
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	const handleClearItemsCompleted = () => {
-		localStorage.setItem('data', JSON.stringify(itemsActive))
+		saveToLocalStorage(itemsActive)
 		onClearCompletedTodos()
 	}
 
@@ -83,7 +91,7 @@ function TodoListApp({
 			(e) => e.id.toString() !== event.target.id
 		)
 
-		localStorage.setItem('data', JSON.stringify(newData))
+		saveToLocalStorage(newData)
 		onRemoveTodo(event.target.id)
 	}
 
@@ -98,7 +106,7 @@ function TodoListApp({
 				...currentTodos,
 			]
 
-			localStorage.setItem('data', JSON.stringify(newData))
+			saveToLocalStorage(newData)
 			onAddTodo(todoNew)
 
 			setTodoNew('')
@@ -115,8 +123,8 @@ function TodoListApp({
 			isChecked: !newData[indexEle].isChecked,
 		}
 
+		saveToLocalStorage(newData)
 		onCheckTodo(e.target.id)
-		localStorage.setItem('data', JSON.stringify(newData))
 	}
 
 	const handleChangeFilter = (type) => {
@@ -189,7 +197,6 @@ TodoListApp.defaultProps = {
 const mapStateToProps = (state) => {
 	return {
 		currentTodos: state.todos.currentTodos,
-		// currentFilter: state.todos.typeFilter,
 	}
 }
 
