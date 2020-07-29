@@ -6,4 +6,4 @@
 
 ## Description
 ##### Todo list app (only ReactJS) - 100%
-##### Todo list app (ReactJS + Redux) - 95%
+##### Todo list app (ReactJS + Redux) - 80%
