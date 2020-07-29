@@ -10,18 +10,20 @@ const Wrapper = styled.button`
 	padding: ${(props) => (props.filter ? '3px 7px' : '0')};
 	outline: none;
 	&:hover {
-		text-decoration: ${(props) => props.filter && !props.active && 'underline'};
+		text-decoration: ${(props) =>
+			((props.filter && !props.active) || props.clear) && 'underline'};
 	}
 `
 
 const Text = styled.span``
 
-const GeneralButton = ({ name, active, disabled, filter, onClick }) => (
+const GeneralButton = ({ name, active, disabled, filter, onClick, clear }) => (
 	<Wrapper
 		onClick={onClick}
 		disabled={disabled}
 		filter={filter}
 		active={active}
+		clear={clear}
 	>
 		<Text>{name}</Text>
 	</Wrapper>

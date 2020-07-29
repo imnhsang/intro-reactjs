@@ -16,9 +16,7 @@ const GeneralInput = ({
 	placeholder,
 	onChange,
 	value,
-	onKeyDown,
 	onKeyPress,
-	onBlur,
 }) => (
 	<Input
 		type={text}
@@ -26,8 +24,6 @@ const GeneralInput = ({
 		onChange={onChange}
 		value={value}
 		onKeyPress={onKeyPress}
-		onBlur={onBlur}
-		onKeyDown={onKeyDown}
 	/>
 )
 

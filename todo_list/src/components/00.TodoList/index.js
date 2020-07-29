@@ -15,6 +15,15 @@ const Text = styled.span`
 	display: flex;
 	align-items: center;
 `
+const EmptyText = styled.p`
+	font-family: arial;
+	font-size: 13px;
+	color: #777;
+	text-align: center;
+	margin: 0;
+	padding: 32px 16px 0 16px;
+	width: 100%;
+`
 const Title = styled.h1`
 	padding: 0 16px;
 	width: 100%;
@@ -52,18 +61,18 @@ function TodoListApp() {
 	const itemsActive = data.filter((e) => e.isChecked !== true)
 	const itemsCompleted = data.filter((e) => e.isChecked === true)
 
+	const updateData = (newData) => {
+		localStorage.setItem('data', JSON.stringify(newData))
+		setData(newData)
+	}
+
 	const handleClearItemsCompleted = () => {
-		localStorage.setItem('data', JSON.stringify(itemsActive))
-		setData(itemsActive)
+		updateData(itemsActive)
 	}
 
 	const handleRemoveItem = (event) => {
-		console.log()
-		localStorage.setItem(
-			'data',
-			JSON.stringify(data.filter((e) => e.id !== event.target.id))
-		)
-		setData(data.filter((e) => e.id !== event.target.id))
+		const newData = data.filter((e) => e.id !== event.target.id)
+		updateData(newData)
 	}
 
 	const handleOnchangeTodoNew = (e) => {
@@ -71,36 +80,34 @@ function TodoListApp() {
 	}
 
 	const handleEnterTodoNew = (e) => {
-		if (e.key === 'Enter') {
-			setData([
+		if (e.key === 'Enter' && todoNew.trim().length > 0) {
+			const newData = [
 				{ id: Date.now().toString(), name: todoNew, isChecked: false },
 				...data,
-			])
+			]
+
+			updateData(newData)
+
 			setTodoNew('')
-			localStorage.setItem(
-				'data',
-				JSON.stringify([
-					{ id: Date.now().toString(), name: todoNew, isChecked: false },
-					...data,
-				])
-			)
 		}
 	}
 
-	const handleCheck = (e) => {
-		const index = data.findIndex((x) => x.id === e.target.id)
-		let newArray = [...data]
-		newArray[index] = {
-			...newArray[index],
-			isChecked: !newArray[index].isChecked,
+	const handleCheckTodo = (e) => {
+		const indexEle = data.findIndex((x) => x.id === e.target.id)
+
+		let newData = [...data]
+		newData[indexEle] = {
+			...newData[indexEle],
+			isChecked: !newData[indexEle].isChecked,
 		}
-		setData(newArray)
-		localStorage.setItem('data', JSON.stringify(newArray))
+
+		updateData(newData)
 	}
 
 	const handleChangeFilter = (type) => {
 		setTypeFilter(type)
 	}
+
 	return (
 		<Wrapper>
 			<Title>todos</Title>
@@ -109,9 +116,10 @@ function TodoListApp() {
 				onChange={handleOnchangeTodoNew}
 				onKeyPress={handleEnterTodoNew}
 			/>
+			{filteredData.length === 0 && <EmptyText>No have todo</EmptyText>}
 			<TodoList
 				data={filteredData}
-				checkItem={handleCheck}
+				checkItem={handleCheckTodo}
 				removeItem={handleRemoveItem}
 			/>
 			{data.length > 0 && (
@@ -147,6 +155,7 @@ function TodoListApp() {
 						</Action>
 					</Actions>
 					<Button
+						clear
 						disabled={itemsCompleted.length > 0 ? false : true}
 						name='Clear completed'
 						onClick={handleClearItemsCompleted}
