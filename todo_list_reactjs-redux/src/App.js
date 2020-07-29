@@ -1,13 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import TodoList from './components/00.TodoList'
-import { fetchTodosDataIfNeeded } from './actions/todos'
-import { connect } from 'react-redux'
 
-function App({ onFetchData }) {
-	useEffect(() => {
-		onFetchData()
-  }, [onFetchData])
-  
+function App() {
 	return (
 		<div className='App'>
 			<TodoList />
@@ -15,8 +9,4 @@ function App({ onFetchData }) {
 	)
 }
 
-const mapDispatchToProps = (dispatch) => ({
-	onFetchData: () => dispatch(fetchTodosDataIfNeeded()),
-})
-
-export default connect(null, mapDispatchToProps)(App)
+export default App

@@ -73,25 +73,11 @@ function TodoListApp({
 	const itemsActive = currentTodos.filter((e) => e.isChecked !== true)
 	const itemsCompleted = currentTodos.filter((e) => e.isChecked === true)
 
-	const saveToLocalStorage = (newData) => {
-		try {
-			localStorage.setItem('data', JSON.stringify(newData))
-		} catch (error) {
-			console.log(error)
-		}
-	}
-
 	const handleClearItemsCompleted = () => {
-		saveToLocalStorage(itemsActive)
 		onClearCompletedTodos()
 	}
 
 	const handleRemoveItem = (event) => {
-		const newData = currentTodos.filter(
-			(e) => e.id.toString() !== event.target.id
-		)
-
-		saveToLocalStorage(newData)
 		onRemoveTodo(event.target.id)
 	}
 
@@ -101,12 +87,6 @@ function TodoListApp({
 
 	const handleEnterTodoNew = (e) => {
 		if (e.key === 'Enter' && todoNew.trim().length > 0) {
-			const newData = [
-				{ id: Date.now().toString(), name: todoNew, isChecked: false },
-				...currentTodos,
-			]
-
-			saveToLocalStorage(newData)
 			onAddTodo(todoNew)
 
 			setTodoNew('')
@@ -114,16 +94,6 @@ function TodoListApp({
 	}
 
 	const handleCheckTodo = (e) => {
-		const indexEle = currentTodos.findIndex(
-			(x) => x.id.toString() === e.target.id
-		)
-		let newData = [...currentTodos]
-		newData[indexEle] = {
-			...newData[indexEle],
-			isChecked: !newData[indexEle].isChecked,
-		}
-
-		saveToLocalStorage(newData)
 		onCheckTodo(e.target.id)
 	}
 
