@@ -1,0 +1,5 @@
+export const Auth = {
+	LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+	LOGIN_FAIL: 'LOGIN_FAIL',
+	SIGN_OUT: 'SIGN_OUT',
+}

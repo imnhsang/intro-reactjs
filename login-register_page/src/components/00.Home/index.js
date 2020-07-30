@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
-import { clearStorage } from '../../utils/utils'
-
+import { connect } from 'react-redux'
+import { signout } from '../../actions/auth'
 const Wrapper = styled.div`
 	height: 100vh;
 	display: flex;
-  justify-content: center;
-  align-items:center;
+	justify-content: center;
+	align-items: center;
 `
 const SignoutButton = styled.button`
 	outline: none;
@@ -34,11 +34,11 @@ const ActionWrapper = styled.div`
 	flex-direction: column;
 `
 
-const Home = () => {
+const Home = ({ onSignout }) => {
 	const history = useHistory()
 
 	const handleSignout = () => {
-		clearStorage()
+		onSignout()
 		history.replace('login')
 	}
 
@@ -52,4 +52,8 @@ const Home = () => {
 	)
 }
 
-export default Home
+const mapDispatchToProps = (dispatch) => ({
+	onSignout: () => dispatch(signout()),
+})
+
+export default connect(null, mapDispatchToProps)(Home)
