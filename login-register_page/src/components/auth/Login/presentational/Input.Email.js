@@ -26,7 +26,6 @@ const Col = styled.div`
 `
 
 const EmailInput = ({ id, name, onChange, label, error }) => {
-	console.log(error)
 	return (
 		<Wrapper>
 			<Col>
