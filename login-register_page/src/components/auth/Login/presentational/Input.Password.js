@@ -25,12 +25,14 @@ const Col = styled.div`
 	width: 100%;
 `
 
-const PasswordInput = ({ onChange, onKeyPress, label, error }) => {
+const PasswordInput = ({ id, name, onChange, onKeyPress, label, error }) => {
 	return (
 		<Wrapper>
 			<Col>
 				{error ? <Text error={error}>{error}</Text> : <Text>{label}</Text>}
 				<Input
+					id={id}
+					name={name}
 					type='password'
 					placeholder='Enter your password'
 					onChange={onChange}

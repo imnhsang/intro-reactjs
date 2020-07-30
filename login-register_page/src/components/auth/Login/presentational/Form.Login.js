@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Redirect, useHistory } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import EmailInput from './Input.Email'
 import PasswordInput from './Input.Password'
 
@@ -24,8 +28,8 @@ const ButtonSignin = styled.button`
 	border: none;
 	padding: 12px 24px;
 	color: #fff;
-  border-radius: 4px;
-  transition: transform 0.2s linear;
+	border-radius: 4px;
+	transition: transform 0.2s linear;
 	&:hover {
 		box-shadow: 4px 4px 0px #fff;
 		transform: translate(-4px, -4px);
@@ -37,39 +41,51 @@ const Title = styled.span`
 	margin-bottom: 30px;
 `
 
+const validate = (values) => {
+	const errors = {}
+	if (!values.password) {
+		errors.password = 'Required'
+	} else if (values.password.length > 15) {
+		errors.password = 'Must be 15 characters or less'
+	}
+
+	if (!values.email) {
+		errors.email = 'Required'
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+		errors.email = 'Invalid email address'
+	}
+
+	return errors
+}
+
 const LoginModal = ({ referer }) => {
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [error, setError] = useState('')
-
 	const history = useHistory()
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+		},
+		validate,
+		onSubmit: (values) => {
+			if (values.email === 'user@mail.com' && values.password === '123456') {
+				setAccountToStorage(values.email)
+				history.replace(referer)
+			} else {
+				notify()
+			}
+		},
+	})
 
-	const handleChangeEmail = (e) => {
-		setError('')
-		setEmail(e.target.value)
-	}
-
-	const handleChangePassword = (e) => {
-		setError('')
-		setPassword(e.target.value)
-	}
-
-	const handleLogin = () => {
-		if (email === '' || password === '') {
-			setError('Requied field')
-		} else if (email === 'user@mail.com' && password === '123456') {
-			setAccountToStorage(email)
-			history.replace(referer)
-		} else {
-			setError('Username or password is incorrect')
-		}
-	}
-
-	const handlePressEnter = (e) => {
-		if (e.key === 'Enter') {
-			handleLogin()
-		}
-	}
+	const notify = () =>
+		toast.error('Username or password is incorrect', {
+			position: 'top-right',
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+		})
 
 	if (isAuthenticated()) {
 		return <Redirect to={referer} />
@@ -77,22 +93,27 @@ const LoginModal = ({ referer }) => {
 
 	return (
 		<Wrapper>
+			<ToastContainer />
 			<Title>Sign in</Title>
-			<EmailInput
-				label='Email'
-				error={error}
-				email={email}
-				onChange={handleChangeEmail}
-				onKeyPress={handlePressEnter}
-			/>
-			<PasswordInput
-				label='Password'
-				error={error}
-				password={password}
-				onChange={handleChangePassword}
-				onKeyPress={handlePressEnter}
-			/>
-			<ButtonSignin onClick={handleLogin}>Sign in</ButtonSignin>
+			<form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+				<EmailInput
+					id='email'
+					name='email'
+					label='Email'
+					error={formik.errors.email}
+					email={formik.values.email}
+					onChange={formik.handleChange}
+				/>
+				<PasswordInput
+					id='password'
+					name='password'
+					label='Password'
+					error={formik.errors.password}
+					password={formik.values.password}
+					onChange={formik.handleChange}
+				/>
+				<ButtonSignin type='submit'>Sign in</ButtonSignin>
+			</form>
 		</Wrapper>
 	)
 }
