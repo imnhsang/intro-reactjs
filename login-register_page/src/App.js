@@ -12,6 +12,7 @@ function App() {
 				<PrivateRoute exact path='/' component={Home}></PrivateRoute>
 				<Route exact path='/login' component={Login}></Route>
 				<Route exact path='/register' component={Register}></Route>
+				
 				<Route exact path='*' component={Login}></Route>
 			</Switch>
 		</Router>

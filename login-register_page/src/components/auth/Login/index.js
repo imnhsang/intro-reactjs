@@ -1,13 +1,9 @@
 import React from 'react'
-import { isAuthenticated } from '../../../utils/utils'
-import { Redirect } from 'react-router-dom'
+import LoginForm from './presentational/Form.Login'
 
-const Login = () => {
-	if (isAuthenticated()) {
-		return <Redirect to='/' />
-	}
-
-	return <div>Login page</div>
+const Login = ({ location }) => {
+	const referer = location.state || '/'
+	return <LoginForm referer={referer}></LoginForm>
 }
 
 export default Login
