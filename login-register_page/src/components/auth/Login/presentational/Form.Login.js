@@ -94,7 +94,6 @@ const LoginModal = ({ referer }) => {
 	return (
 		<Wrapper>
 			<ToastContainer />
-			<ToastContainer />
 			<Title>Sign in</Title>
 			<form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
 				<EmailInput
