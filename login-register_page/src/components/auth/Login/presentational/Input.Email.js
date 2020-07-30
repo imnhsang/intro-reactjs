@@ -25,16 +25,18 @@ const Col = styled.div`
 	width: 100%;
 `
 
-const EmailInput = ({ onChange, onKeyPress, label, error }) => {
+const EmailInput = ({ id, name, onChange, label, error }) => {
+	console.log(error)
 	return (
 		<Wrapper>
 			<Col>
 				{error ? <Text error={error}>{error}</Text> : <Text>{label}</Text>}
 				<Input
+					id={id}
+					name={name}
 					type='text'
 					placeholder='Enter your email'
 					onChange={onChange}
-					onKeyPress={onKeyPress}
 				></Input>
 			</Col>
 		</Wrapper>
