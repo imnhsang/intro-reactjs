@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { login } from '../../../../actions/auth'
 import styled from 'styled-components'
-import { Redirect, useHistory } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -8,8 +10,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import EmailInput from './Input.Email'
 import PasswordInput from './Input.Password'
 
-import { isAuthenticated } from '../../../../utils/utils'
-import { setAccountToStorage } from '../../../../utils/utils'
+// import { isAuthenticated } from '../../../../utils/utils'
+// import { setAccountToStorage } from '../../../../utils/utils'
 
 const Wrapper = styled.div`
 	width: 250px;
@@ -58,8 +60,8 @@ const validate = (values) => {
 	return errors
 }
 
-const LoginModal = ({ referer }) => {
-	const history = useHistory()
+const LoginModal = ({ referer, isAuthenticated, onLogin }) => {
+	// const history = useHistory()
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -67,12 +69,7 @@ const LoginModal = ({ referer }) => {
 		},
 		validate,
 		onSubmit: (values) => {
-			if (values.email === 'user@mail.com' && values.password === '123456') {
-				setAccountToStorage(values.email)
-				history.replace(referer)
-			} else {
-				notify()
-			}
+			onLogin(values.email, values.password, referer, notify)
 		},
 	})
 
@@ -87,7 +84,7 @@ const LoginModal = ({ referer }) => {
 			progress: undefined,
 		})
 
-	if (isAuthenticated()) {
+	if (isAuthenticated) {
 		return <Redirect to={referer} />
 	}
 
@@ -118,4 +115,15 @@ const LoginModal = ({ referer }) => {
 	)
 }
 
-export default LoginModal
+const mapStateToProps = (state) => {
+	return {
+		isAuthenticated: state.auth.isAuthenticated,
+	}
+}
+
+const mapDispatchToProps = (dispatch) => ({
+	onLogin: (email, password, referer) =>
+		dispatch(login(email, password, referer)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginModal)
