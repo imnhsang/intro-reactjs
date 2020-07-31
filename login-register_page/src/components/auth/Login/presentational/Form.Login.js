@@ -10,9 +10,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import EmailInput from './Input.Email'
 import PasswordInput from './Input.Password'
 
-// import { isAuthenticated } from '../../../../utils/utils'
-// import { setAccountToStorage } from '../../../../utils/utils'
-
 const Wrapper = styled.div`
 	width: 250px;
 	padding: 48px 40px 36px;
@@ -63,7 +60,6 @@ const validate = (values) => {
 }
 
 const LoginModal = ({ referer, isAuthenticated, onLogin }) => {
-	// const history = useHistory()
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -71,7 +67,8 @@ const LoginModal = ({ referer, isAuthenticated, onLogin }) => {
 		},
 		validate,
 		onSubmit: (values) => {
-			onLogin(values.email, values.password, referer, notify)
+			onLogin(values.email, values.password)
+			!isAuthenticated && notify()
 		},
 	})
 
@@ -124,8 +121,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	onLogin: (email, password, referer) =>
-		dispatch(login(email, password, referer)),
+	onLogin: (email, password) => dispatch(login(email, password)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginModal)
