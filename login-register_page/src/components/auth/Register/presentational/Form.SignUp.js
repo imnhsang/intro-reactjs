@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { login } from '../../../../actions/auth'
+import { signup } from '../../../../actions/auth'
 import styled from 'styled-components'
 import { Redirect, useHistory } from 'react-router-dom'
 import { useFormik } from 'formik'
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 `
-const ButtonSignin = styled.button`
+const ButtonSignup = styled.button`
 	outline: none;
 	cursor: pointer;
 	font-weight: 700;
@@ -36,7 +36,6 @@ const ButtonSignin = styled.button`
 `
 const Title = styled.span`
 	width: 100%;
-	text-align: center;
 	margin-bottom: 30px;
 `
 const ActionWrapper = styled.div`
@@ -44,7 +43,7 @@ const ActionWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 `
-const ButtonSignup = styled.button`
+const ButtonBack = styled.button`
 	border: none;
 	outline: none;
 	background: transparent;
@@ -52,13 +51,18 @@ const ButtonSignup = styled.button`
 	color: #1a73e8;
 	font-weight: 700;
 `
-
 const validate = (values) => {
 	const errors = {}
+	if (!values.confirmPassword) {
+		errors.confirmPassword = 'Required'
+	} else if (values.confirmPassword !== values.password) {
+		errors.confirmPassword = 'Must match the password'
+	}
+
 	if (!values.password) {
 		errors.password = 'Required'
-	} else if (values.password.length > 15) {
-		errors.password = 'Must be 15 characters or less'
+	} else if (values.password.length < 6) {
+		errors.password = 'Password should be at least 6 characters'
 	}
 
 	if (!values.email) {
@@ -68,25 +72,25 @@ const validate = (values) => {
 	) {
 		errors.email = 'Invalid email address'
 	}
-
 	return errors
 }
 
-const LoginModal = ({ referer, account, onLogin }) => {
+const SignupModal = ({ referer, account, onSignup }) => {
+	const history = useHistory()
 	const formik = useFormik({
 		initialValues: {
 			email: '',
 			password: '',
+			confirmPassword: '',
 		},
 		validate,
 		onSubmit: (values) => {
-			onLogin(values.email, values.password)
+			onSignup(values.email, values.password)
 		},
 	})
 
-	const history = useHistory()
-	const handleRedirectSignupPage = () => {
-		history.replace('/register')
+	const handleBackLogin = () => {
+		history.replace('/login')
 	}
 
 	if (account) {
@@ -96,7 +100,7 @@ const LoginModal = ({ referer, account, onLogin }) => {
 	return (
 		<Wrapper>
 			<ToastContainer />
-			<Title>Welcome</Title>
+			<Title>Create your Account</Title>
 			<form
 				style={{
 					width: '100%',
@@ -122,11 +126,19 @@ const LoginModal = ({ referer, account, onLogin }) => {
 					password={formik.values.password}
 					onChange={formik.handleChange}
 				/>
+				<PasswordInput
+					id='confirmPassword'
+					name='confirmPassword'
+					label='Confirm password'
+					error={formik.errors.confirmPassword}
+					password={formik.values.confirmPassword}
+					onChange={formik.handleChange}
+				/>
 				<ActionWrapper>
-					<ButtonSignup type='button' onClick={handleRedirectSignupPage}>
-						Create account
-					</ButtonSignup>
-					<ButtonSignin type='submit'>Sign in</ButtonSignin>
+					<ButtonBack type='button' onClick={handleBackLogin}>
+						Back
+					</ButtonBack>
+					<ButtonSignup type='submit'>Sign up</ButtonSignup>
 				</ActionWrapper>
 			</form>
 		</Wrapper>
@@ -140,7 +152,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	onLogin: (email, password) => dispatch(login(email, password)),
+	onSignup: (email, password) => dispatch(signup(email, password)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginModal)
+export default connect(mapStateToProps, mapDispatchToProps)(SignupModal)

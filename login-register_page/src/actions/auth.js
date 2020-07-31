@@ -32,12 +32,7 @@ export const login = (email, password) => (dispatch) => {
 	fire
 		.auth()
 		.signInWithEmailAndPassword(email, password)
-		.then((user) => {
-			return dispatch({
-				type: Auth.LOGIN_SUCCESS,
-				user,
-			})
-		})
+		.then((user) => dispatch({ type: Auth.LOGIN_SUCCESS, user }))
 		.catch((err) => {
 			return dispatch({ type: Auth.LOGIN_FAIL, err })
 		})
@@ -47,12 +42,16 @@ export const signout = () => (dispatch) => {
 	fire
 		.auth()
 		.signOut()
-		.then(() => {
-			console.log('logout')
-			return dispatch({
-				type: Auth.SIGNOUT,
-			})
-		})
+		.then(() => dispatch({ type: Auth.SIGNOUT_SUCCESS }))
+		.catch((err) => dispatch({ type: Auth.SIGNOUT_FAIL, err }))
+}
+
+export const signup = (email, password) => (dispatch) => {
+	fire
+		.auth()
+		.createUserWithEmailAndPassword(email, password)
+		.then((user) => dispatch({ type: Auth.SIGNUP_SUCCESS, user }))
+		.catch((err) => dispatch({ type: Auth.SIGNUP_FAIL, err }))
 }
 
 const shouldFetchAuthData = (state) => {

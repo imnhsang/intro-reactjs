@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 const initialState = {
 	account: null,
 	initialized: false,
-	loading: false,
+	loading: true,
 }
 
 const notifyError = (err) =>
@@ -28,17 +28,22 @@ const auth = (state = initialState, action) => {
 		case Auth.LOGIN_FAIL:
 			notifyError(action.err)
 			return { ...state, account: null }
-		case Auth.SIGNOUT:
+		case Auth.SIGNOUT_SUCCESS:
 			return { ...state, account: null }
+		case Auth.SIGNOUT_FAIL:
+			notifyError(action.err)
+			return { ...state }
 		case Auth.INITIALIZED_AUTH_DATA:
-			console.log(state)
 			return { ...state, initialized: true }
 		case Auth.RECEIVE_AUTH_DATA:
-			console.log(state)
 			return { ...state, account: action.user, loading: false }
 		case Auth.REQUEST_AUTH_DATA:
-			console.log(state)
 			return { ...state, loading: true }
+		case Auth.SIGNUP_SUCCESS:
+			return { ...state, account: action.user }
+		case Auth.SIGNUP_FAIL:
+			notifyError(action.err)
+			return { ...state }
 		default:
 			return state
 	}

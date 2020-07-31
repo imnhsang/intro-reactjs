@@ -7,25 +7,25 @@ import Register from './components/auth/Register'
 import { connect } from 'react-redux'
 import { fetchAuthDataIfNeeded } from './actions/auth'
 
-function App({ onFetchData }) {
+function App({ onFetchData}) {
 	useEffect(() => {
 		onFetchData()
 	}, [onFetchData])
 
 	return (
-		<>
-			<Router>
-				<Switch>
-					<PrivateRoute exact path='/' component={Home}></PrivateRoute>
-					<Route exact path='/login' component={Login}></Route>
-					<Route exact path='/register' component={Register}></Route>
+		<Router>
+			<Switch>
+				<PrivateRoute exact path='/' component={Home}></PrivateRoute>
+				<Route exact path='/login' component={Login}></Route>
+				<Route exact path='/register' component={Register}></Route>
 
-					<Route exact path='*' component={Login}></Route>
-				</Switch>
-			</Router>
-		</>
+				<Route exact path='*' component={Login}></Route>
+			</Switch>
+		</Router>
 	)
 }
+
+
 
 const mapDispatchToProps = (dispatch) => ({
 	onFetchData: () => dispatch(fetchAuthDataIfNeeded()),
