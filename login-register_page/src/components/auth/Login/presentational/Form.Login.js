@@ -4,7 +4,7 @@ import { login } from '../../../../actions/auth'
 import styled from 'styled-components'
 import { Redirect } from 'react-router-dom'
 import { useFormik } from 'formik'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import EmailInput from './Input.Email'
@@ -17,7 +17,6 @@ const Wrapper = styled.div`
 	border: 1px solid #dadce0;
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
 `
 const ButtonSignin = styled.button`
 	outline: none;
@@ -28,6 +27,7 @@ const ButtonSignin = styled.button`
 	padding: 12px 24px;
 	color: #fff;
 	border-radius: 4px;
+	width: fit-content;
 	transition: transform 0.2s linear;
 	&:hover {
 		box-shadow: 4px 4px 0px #fff;
@@ -59,7 +59,7 @@ const validate = (values) => {
 	return errors
 }
 
-const LoginModal = ({ referer, isAuthenticated, onLogin }) => {
+const LoginModal = ({ referer, account, onLogin }) => {
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -68,22 +68,10 @@ const LoginModal = ({ referer, isAuthenticated, onLogin }) => {
 		validate,
 		onSubmit: (values) => {
 			onLogin(values.email, values.password)
-			!isAuthenticated && notify()
 		},
 	})
 
-	const notify = () =>
-		toast.error('Username or password is incorrect', {
-			position: 'top-right',
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-		})
-
-	if (isAuthenticated) {
+	if (account) {
 		return <Redirect to={referer} />
 	}
 
@@ -91,7 +79,15 @@ const LoginModal = ({ referer, isAuthenticated, onLogin }) => {
 		<Wrapper>
 			<ToastContainer />
 			<Title>Sign in</Title>
-			<form style={{ width: '100%' }} onSubmit={formik.handleSubmit}>
+			<form
+				style={{
+					width: '100%',
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'flex-end',
+				}}
+				onSubmit={formik.handleSubmit}
+			>
 				<EmailInput
 					id='email'
 					name='email'
@@ -116,7 +112,7 @@ const LoginModal = ({ referer, isAuthenticated, onLogin }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		isAuthenticated: state.auth.isAuthenticated,
+		account: state.auth.account,
 	}
 }
 
