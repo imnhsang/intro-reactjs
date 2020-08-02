@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 const initialState = {
 	account: null,
 	initialized: false,
-	loading: true,
+	loading: false,
 }
 
 const notifyError = (err) =>

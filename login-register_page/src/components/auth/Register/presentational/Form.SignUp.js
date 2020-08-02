@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { signup } from '../../../../actions/auth'
 import styled from 'styled-components'
@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import EmailInput from './Input.Email'
 import PasswordInput from './Input.Password'
+import ButtonSignLoading from '../../../common/presentational/Button.Loading'
 
 const Wrapper = styled.div`
 	width: 300px;
@@ -17,22 +18,6 @@ const Wrapper = styled.div`
 	border: 1px solid #dadce0;
 	display: flex;
 	flex-direction: column;
-`
-const ButtonSignup = styled.button`
-	outline: none;
-	cursor: pointer;
-	font-weight: 700;
-	background: #1a73e8;
-	border: none;
-	padding: 12px 24px;
-	color: #fff;
-	border-radius: 4px;
-	width: fit-content;
-	transition: transform 0.2s linear;
-	&:hover {
-		box-shadow: 4px 4px 0px #fff;
-		transform: translate(-4px, -4px);
-	}
 `
 const Title = styled.span`
 	width: 100%;
@@ -76,6 +61,7 @@ const validate = (values) => {
 }
 
 const SignupModal = ({ referer, account, onSignup }) => {
+	const [loading, setLoading] = useState(false)
 	const history = useHistory()
 	const formik = useFormik({
 		initialValues: {
@@ -85,7 +71,11 @@ const SignupModal = ({ referer, account, onSignup }) => {
 		},
 		validate,
 		onSubmit: (values) => {
+			setLoading(true)
 			onSignup(values.email, values.password)
+			if (!account) {
+				setTimeout(() => setLoading(false), 1500)
+			}
 		},
 	})
 
@@ -138,7 +128,7 @@ const SignupModal = ({ referer, account, onSignup }) => {
 					<ButtonBack type='button' onClick={handleBackLogin}>
 						Back
 					</ButtonBack>
-					<ButtonSignup type='submit'>Sign up</ButtonSignup>
+					<ButtonSignLoading loading={loading} name='Sign up' type='submit' />
 				</ActionWrapper>
 			</form>
 		</Wrapper>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { login } from '../../../../actions/auth'
 import styled from 'styled-components'
@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import EmailInput from './Input.Email'
 import PasswordInput from './Input.Password'
+import ButtonSigninLoading from '../../../common/presentational/Button.Loading'
 
 const Wrapper = styled.div`
 	width: 300px;
@@ -18,25 +19,8 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 `
-const ButtonSignin = styled.button`
-	outline: none;
-	cursor: pointer;
-	font-weight: 700;
-	background: #1a73e8;
-	border: none;
-	padding: 12px 24px;
-	color: #fff;
-	border-radius: 4px;
-	width: fit-content;
-	transition: transform 0.2s linear;
-	&:hover {
-		box-shadow: 4px 4px 0px #fff;
-		transform: translate(-4px, -4px);
-	}
-`
 const Title = styled.span`
 	width: 100%;
-	text-align: center;
 	margin-bottom: 30px;
 `
 const ActionWrapper = styled.div`
@@ -44,7 +28,7 @@ const ActionWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 `
-const ButtonSignup = styled.button`
+const ButtonCreateAccount = styled.button`
 	border: none;
 	outline: none;
 	background: transparent;
@@ -73,6 +57,7 @@ const validate = (values) => {
 }
 
 const LoginModal = ({ referer, account, onLogin }) => {
+	const [loading, setLoading] = useState(false)
 	const formik = useFormik({
 		initialValues: {
 			email: '',
@@ -80,7 +65,11 @@ const LoginModal = ({ referer, account, onLogin }) => {
 		},
 		validate,
 		onSubmit: (values) => {
+			setLoading(true)
 			onLogin(values.email, values.password)
+			if (!account) {
+				setTimeout(() => setLoading(false), 1500)
+			}
 		},
 	})
 
@@ -96,7 +85,7 @@ const LoginModal = ({ referer, account, onLogin }) => {
 	return (
 		<Wrapper>
 			<ToastContainer />
-			<Title>Welcome</Title>
+			<Title>Log in your Account</Title>
 			<form
 				style={{
 					width: '100%',
@@ -123,10 +112,10 @@ const LoginModal = ({ referer, account, onLogin }) => {
 					onChange={formik.handleChange}
 				/>
 				<ActionWrapper>
-					<ButtonSignup type='button' onClick={handleRedirectSignupPage}>
+					<ButtonCreateAccount type='button' onClick={handleRedirectSignupPage}>
 						Create account
-					</ButtonSignup>
-					<ButtonSignin type='submit'>Sign in</ButtonSignin>
+					</ButtonCreateAccount>
+					<ButtonSigninLoading type='submit' name='Sign in' loading={loading} />
 				</ActionWrapper>
 			</form>
 		</Wrapper>

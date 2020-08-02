@@ -1,6 +1,7 @@
 // import React from 'react'
 import { Auth } from '../constants/actionTypes'
-import fire from '../config/fire'
+import fire from '../config/firebase/fire'
+import provider from  '../config/firebase/facebook'
 
 export const initializedAuthData = (status) => ({
 	type: Auth.INITIALIZED_AUTH_DATA,
@@ -33,9 +34,18 @@ export const login = (email, password) => (dispatch) => {
 		.auth()
 		.signInWithEmailAndPassword(email, password)
 		.then((user) => dispatch({ type: Auth.LOGIN_SUCCESS, user }))
-		.catch((err) => {
-			return dispatch({ type: Auth.LOGIN_FAIL, err })
+		.catch((err) => dispatch({ type: Auth.LOGIN_FAIL, err }))
+}
+
+export const loginByFacebook = () => (dispatch) => {
+	fire
+		.auth()
+		.signInWithPopup(provider)
+		.then((result) => {
+			const user = result.user
+			return dispatch({ type: Auth.LOGIN_SUCCESS, user })
 		})
+		.catch((err) => dispatch({ type: Auth.LOGIN_FAIL, err }))
 }
 
 export const signout = () => (dispatch) => {
