@@ -7,8 +7,8 @@ import { useFormik } from 'formik'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import EmailInput from './Input.Email'
-import PasswordInput from './Input.Password'
+import EmailInput from '../../../common/presentational/Input.Email'
+import PasswordInput from '../../../common/presentational/Input.Password'
 import ButtonSigninLoading from '../../../common/presentational/Button.Loading'
 
 const Wrapper = styled.div`
