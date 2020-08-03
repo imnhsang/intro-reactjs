@@ -3,11 +3,11 @@ import { Route, Redirect } from 'react-router-dom'
 // import { isAuthenticated } from './utils/utils'
 import { connect } from 'react-redux'
 
-const PrivateRoute = ({ isAuthenticated, component: Component, ...rest }) => (
+const PrivateRoute = ({ account, component: Component, ...rest }) => (
 	<Route
 		{...rest}
 		render={(props) =>
-			isAuthenticated ? (
+			account ? (
 				<Component {...props} />
 			) : (
 				<Redirect
@@ -23,7 +23,7 @@ const PrivateRoute = ({ isAuthenticated, component: Component, ...rest }) => (
 
 const mapStateToProps = (state) => {
 	return {
-		isAuthenticated: state.auth.isAuthenticated,
+		account: state.auth.account,
 	}
 }
 
