@@ -1,22 +1,10 @@
 import { Notes } from '../constants/actionTypes'
-// import { toast } from 'react-toastify'
 
 const initialState = {
 	currentNotes: null,
 	initialized: false,
 	loading: false,
 }
-
-// const notifyError = (err) =>
-// 	toast.error(err.message, {
-// 		position: 'top-right',
-// 		autoClose: 5000,
-// 		hideProgressBar: false,
-// 		closeOnClick: true,
-// 		pauseOnHover: true,
-// 		draggable: true,
-// 		progress: undefined,
-// 	})
 
 const notes = (state = initialState, action) => {
 	switch (action.type) {
@@ -28,6 +16,8 @@ const notes = (state = initialState, action) => {
 			return { ...state, loading: true }
 		case Notes.RESET_NOTES_DATA:
 			return { ...state, currentNotes: null, loading: false }
+		case Notes.ADD_A_NOTE:
+			return { ...state, currentNotes: [action.note, ...state.currentNotes] }
 		default:
 			return state
 	}

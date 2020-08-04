@@ -9,6 +9,8 @@ import { getAccountFromStorage } from '../../utils/utils'
 import { resetNotesData } from '../../actions/notes'
 // import ButtonPublishLoading from '../common/presentational/Button.Loading'
 
+import FormNote from '../01.Notes/container/Form.Note'
+
 const Wrapper = styled.div`
 	// display: flex;
 	// justify-content: center;
@@ -51,7 +53,7 @@ const Title = styled.h1`
 	color: rgba(175, 47, 47, 0.7);
 `
 
-const Home = ({ onSignout, onResetNotesData, onFetchData, notes,loading }) => {
+const Home = ({ onSignout, onResetNotesData, onFetchData, notes, loading }) => {
 	const history = useHistory()
 	// const [loading, setLoading] = useState(false)
 	const handleSignout = () => {
@@ -67,6 +69,7 @@ const Home = ({ onSignout, onResetNotesData, onFetchData, notes,loading }) => {
 	return (
 		<Wrapper>
 			<Title>Welcome ^^</Title>
+			<FormNote />
 			<ButtonWrapper>
 				<ActionWrapper>
 					<SignoutButton onClick={handleSignout}>Sign out</SignoutButton>

@@ -9,9 +9,7 @@ const app = express()
 
 app.use((req, res, next) => {
 	// Website you wish to allow to connect
-	const allowedOrigins = [
-		'http://localhost:3000',
-	]
+	const allowedOrigins = ['http://localhost:3000']
 	const origin = req.headers.origin
 	if (allowedOrigins.indexOf(origin) > -1) {
 		res.setHeader('Access-Control-Allow-Origin', origin)
@@ -61,8 +59,7 @@ app.get('/:uid', async (req, res) => {
 		notes.push({ id, ...data })
 	})
 
-
-	res.status(200).send(notes)
+	res.status(200).send(notes.sort((x, y) => y.createdAt - x.createdAt))
 })
 
 exports.note = functions.https.onRequest(app)

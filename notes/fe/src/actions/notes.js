@@ -19,6 +19,11 @@ export const receiveNotesData = (notes) => ({
 	notes,
 })
 
+export const addNote = (note) => ({
+	type: Notes.ADD_A_NOTE,
+	note
+})
+
 const fetchNotesData = (uid) => async (dispatch) => {
 	dispatch(requestNotesData())
 	try {
