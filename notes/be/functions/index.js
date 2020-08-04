@@ -9,7 +9,10 @@ const app = express()
 
 app.use((req, res, next) => {
 	// Website you wish to allow to connect
-	const allowedOrigins = ['http://localhost:3000']
+	const allowedOrigins = [
+		'http://localhost:3000',
+		'https://notesnguyen.netlify.app',
+	]
 	const origin = req.headers.origin
 	if (allowedOrigins.indexOf(origin) > -1) {
 		res.setHeader('Access-Control-Allow-Origin', origin)

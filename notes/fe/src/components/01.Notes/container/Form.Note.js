@@ -65,17 +65,16 @@ function FormNote({ onAddNote }) {
 					}
 					try {
 						await api.post('', body)
-						
+
 						setLoading(false)
 						notifySuccess('Created successfully!!!')
 						onAddNote(body)
-
 
 						setTitle('')
 						setContent('')
 					} catch (error) {
 						setLoading(false)
-						notifySuccess('Created failed!!!')
+						notifyError('Created failed!!!')
 					}
 				} else {
 					notifyError('Title and Content are required.')
