@@ -22,7 +22,7 @@ const notifyError = (err) =>
 const auth = (state = initialState, action) => {
 	switch (action.type) {
 		case Auth.LOGIN_SUCCESS:
-			setAccountToStorage(action.user.user.uid)
+			setAccountToStorage(action.user.uid || action.user[0].localId)
 			return {
 				...state,
 				account: action.user,
