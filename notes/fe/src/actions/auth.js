@@ -12,6 +12,10 @@ export const requestAuthData = () => ({
 	type: Auth.REQUEST_AUTH_DATA,
 })
 
+export const requestSign = () => ({
+	type: Auth.REQUEST_SIGN,
+})
+
 export const receiveAuthData = (user) => ({
 	type: Auth.RECEIVE_AUTH_DATA,
 	user,
@@ -30,6 +34,7 @@ const fetchAuthData = () => (dispatch) => {
 }
 
 export const login = (email, password) => (dispatch) => {
+	dispatch(requestSign())
 	fire
 		.auth()
 		.signInWithEmailAndPassword(email, password)

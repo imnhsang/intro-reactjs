@@ -6,6 +6,7 @@ const initialState = {
 	account: null,
 	initialized: false,
 	loading: false,
+	loadingAuth: false,
 }
 
 const notifyError = (err) =>
@@ -25,11 +26,12 @@ const auth = (state = initialState, action) => {
 			setAccountToStorage(action.user.uid || action.user[0].localId)
 			return {
 				...state,
+				loadingAuth: false,
 				account: action.user,
 			}
 		case Auth.LOGIN_FAIL:
 			notifyError(action.err)
-			return { ...state, account: null }
+			return { ...state, account: null, loadingAuth: false }
 		case Auth.SIGNOUT_SUCCESS:
 			clearStorage()
 			return { ...state, account: null }
@@ -40,6 +42,8 @@ const auth = (state = initialState, action) => {
 			return { ...state, initialized: true }
 		case Auth.RECEIVE_AUTH_DATA:
 			return { ...state, account: action.user, loading: false }
+		case Auth.REQUEST_SIGN:
+			return { ...state, loadingAuth: true }
 		case Auth.REQUEST_AUTH_DATA:
 			return { ...state, loading: true }
 		case Auth.SIGNUP_SUCCESS:

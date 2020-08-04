@@ -5,6 +5,7 @@ const initialState = {
 	account: null,
 	initialized: false,
 	loading: false,
+	loadingAuth: false,
 }
 
 const notifyError = (err) =>
@@ -24,10 +25,11 @@ const auth = (state = initialState, action) => {
 			return {
 				...state,
 				account: action.user,
+				loadingAuth: false,
 			}
 		case Auth.LOGIN_FAIL:
 			notifyError(action.err)
-			return { ...state, account: null }
+			return { ...state, account: null, loadingAuth: false }
 		case Auth.SIGNOUT_SUCCESS:
 			return { ...state, account: null }
 		case Auth.SIGNOUT_FAIL:
@@ -44,6 +46,8 @@ const auth = (state = initialState, action) => {
 		case Auth.SIGNUP_FAIL:
 			notifyError(action.err)
 			return { ...state }
+		case Auth.REQUEST_SIGN:
+			return { ...state, loadingAuth: true }
 		default:
 			return state
 	}

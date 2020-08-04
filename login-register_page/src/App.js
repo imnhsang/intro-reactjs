@@ -9,14 +9,7 @@ import { fetchAuthDataIfNeeded } from './actions/auth'
 
 function App({ onFetchData }) {
 	useEffect(() => {
-		const abortController = new AbortController()
-		const signal = abortController.signal
-
-		onFetchData(signal)
-
-		return function cleanup() {
-			abortController.abort()
-		}
+		onFetchData()
 	}, [onFetchData])
 
 	return (
@@ -33,7 +26,7 @@ function App({ onFetchData }) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	onFetchData: (signal) => dispatch(fetchAuthDataIfNeeded(signal)),
+	onFetchData: () => dispatch(fetchAuthDataIfNeeded()),
 })
 
 export default connect(null, mapDispatchToProps)(App)
