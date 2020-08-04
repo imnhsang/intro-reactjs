@@ -7,9 +7,16 @@ import Register from './components/auth/Register'
 import { connect } from 'react-redux'
 import { fetchAuthDataIfNeeded } from './actions/auth'
 
-function App({ onFetchData}) {
+function App({ onFetchData }) {
 	useEffect(() => {
-		onFetchData()
+		const abortController = new AbortController()
+		const signal = abortController.signal
+
+		onFetchData(signal)
+
+		return function cleanup() {
+			abortController.abort()
+		}
 	}, [onFetchData])
 
 	return (
@@ -25,10 +32,8 @@ function App({ onFetchData}) {
 	)
 }
 
-
-
 const mapDispatchToProps = (dispatch) => ({
-	onFetchData: () => dispatch(fetchAuthDataIfNeeded()),
+	onFetchData: (signal) => dispatch(fetchAuthDataIfNeeded(signal)),
 })
 
 export default connect(null, mapDispatchToProps)(App)
