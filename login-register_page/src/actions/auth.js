@@ -1,7 +1,7 @@
 // import React from 'react'
 import { Auth } from '../constants/actionTypes'
 import fire from '../config/firebase/fire'
-import provider from  '../config/firebase/facebook'
+import provider from '../config/firebase/facebook'
 
 export const initializedAuthData = (status) => ({
 	type: Auth.INITIALIZED_AUTH_DATA,
@@ -17,6 +17,10 @@ export const receiveAuthData = (user) => ({
 	user,
 })
 
+export const requestSign = () => ({
+	type: Auth.REQUEST_SIGN,
+})
+
 const fetchAuthData = () => (dispatch) => {
 	dispatch(requestAuthData())
 	try {
@@ -30,6 +34,7 @@ const fetchAuthData = () => (dispatch) => {
 }
 
 export const login = (email, password) => (dispatch) => {
+	dispatch(requestSign())
 	fire
 		.auth()
 		.signInWithEmailAndPassword(email, password)

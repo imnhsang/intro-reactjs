@@ -1,13 +1,13 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-// import { isAuthenticated } from './utils/utils'
+import { isAuthenticated } from './utils/utils'
 import { connect } from 'react-redux'
 
 const PrivateRoute = ({ account, component: Component, ...rest }) => (
 	<Route
 		{...rest}
 		render={(props) =>
-			account ? (
+			isAuthenticated() ? (
 				<Component {...props} />
 			) : (
 				<Redirect
