@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import TodoInput from './presentational/Input.Todo'
-import Button from '../common/presentational/Button'
+import Button from '@components/common/presentational/Button'
 import TodoList from './presentational/List.Todo'
 import { connect } from 'react-redux'
 import {

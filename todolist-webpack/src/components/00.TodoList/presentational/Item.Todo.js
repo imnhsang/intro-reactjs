@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Checkbox from '../../common/presentational/Input.Checkbox'
-import Remove from '../../common/presentational/Button.Remove'
+import Checkbox from '@components/common/presentational/Input.Checkbox'
+import Remove from '@components/common/presentational/Button.Remove'
 
 const Wrapper = styled.div`
 	width: 100%;

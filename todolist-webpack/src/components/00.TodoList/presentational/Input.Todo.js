@@ -1,5 +1,5 @@
 import React from 'react'
-import Input from '../../common/presentational/Input'
+import Input from '@components/common/presentational/Input'
 
 const TodoInput = ({ todoText, onChange, onKeyPress }) => (
 	<Input
