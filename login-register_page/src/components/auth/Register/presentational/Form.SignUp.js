@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { signup } from '../../../../actions/auth'
 import styled from 'styled-components'
@@ -60,8 +60,7 @@ const validate = (values) => {
 	return errors
 }
 
-const SignupModal = ({ referer, account, onSignup }) => {
-	const [loading, setLoading] = useState(false)
+const SignupModal = ({ referer, account, onSignup, loading }) => {
 	const history = useHistory()
 	const formik = useFormik({
 		initialValues: {
@@ -71,11 +70,7 @@ const SignupModal = ({ referer, account, onSignup }) => {
 		},
 		validate,
 		onSubmit: (values) => {
-			setLoading(true)
 			onSignup(values.email, values.password)
-			if (!account) {
-				setTimeout(() => setLoading(false), 1500)
-			}
 		},
 	})
 
@@ -138,6 +133,7 @@ const SignupModal = ({ referer, account, onSignup }) => {
 const mapStateToProps = (state) => {
 	return {
 		account: state.auth.account,
+		loading: state.auth.loadingAuth,
 	}
 }
 
