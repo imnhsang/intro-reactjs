@@ -1,5 +1,6 @@
 import { Auth } from '../constants/actionTypes'
 import { toast } from 'react-toastify'
+import * as Sentry from '@sentry/browser'
 
 const initialState = {
 	account: null,
@@ -28,12 +29,14 @@ const auth = (state = initialState, action) => {
 				loadingAuth: false,
 			}
 		case Auth.LOGIN_FAIL:
+			Sentry.captureException(action.err)
 			notifyError(action.err)
 			return { ...state, account: null, loadingAuth: false }
 		case Auth.SIGNOUT_SUCCESS:
 			return { ...state, account: null }
 		case Auth.SIGNOUT_FAIL:
 			notifyError(action.err)
+			Sentry.captureException(action.err)
 			return { ...state }
 		case Auth.INITIALIZED_AUTH_DATA:
 			return { ...state, initialized: true }
@@ -42,10 +45,11 @@ const auth = (state = initialState, action) => {
 		case Auth.REQUEST_AUTH_DATA:
 			return { ...state, loading: true }
 		case Auth.SIGNUP_SUCCESS:
-			return { ...state, account: action.user }
+			return { ...state, account: action.user, loadingAuth: false }
 		case Auth.SIGNUP_FAIL:
 			notifyError(action.err)
-			return { ...state }
+			Sentry.captureException(action.err)
+			return { ...state, loadingAuth: false }
 		case Auth.REQUEST_SIGN:
 			return { ...state, loadingAuth: true }
 		default:

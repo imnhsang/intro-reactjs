@@ -62,6 +62,7 @@ export const signout = () => (dispatch) => {
 }
 
 export const signup = (email, password) => (dispatch) => {
+	dispatch(requestSign())
 	fire
 		.auth()
 		.createUserWithEmailAndPassword(email, password)
