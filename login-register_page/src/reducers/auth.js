@@ -29,6 +29,7 @@ const auth = (state = initialState, action) => {
 				loadingAuth: false,
 			}
 		case Auth.LOGIN_FAIL:
+			Sentry.captureException(action.err)
 			notifyError(action.err)
 			return { ...state, account: null, loadingAuth: false }
 		case Auth.SIGNOUT_SUCCESS:
